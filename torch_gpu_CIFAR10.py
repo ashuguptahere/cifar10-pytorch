@@ -4,14 +4,13 @@ import torch
 import torchvision
 import torch.nn as nn
 
-# Working on CUDA available Machine
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 print(device)
 
 batch_size = 256
 
-# Defining Class
+# Class
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
@@ -20,14 +19,13 @@ class LeNet(nn.Module):
                                         nn.AvgPool2d(2, stride = 2).cuda(),
                                         nn.Conv2d(6, 16, 5).cuda(),
                                         nn.Tanh().cuda(),
-                                        nn.AvgPool2d(2, stride = 2).cuda(),
-                                        )
+                                        nn.AvgPool2d(2, stride = 2).cuda())
+        
         self.dense_model = nn.Sequential(nn.Linear(400, 120).cuda(),
                                          nn.Tanh().cuda(),
                                          nn.Linear(120, 84).cuda(),
                                          nn.Tanh().cuda(),
-                                         nn.Linear(84, 10).cuda()
-                                         )
+                                         nn.Linear(84, 10).cuda())
     def forward(self, x):
         #x = x.to(device)
         y = self.conv_model(x)
@@ -36,17 +34,19 @@ class LeNet(nn.Module):
         y = self.dense_model(y)
         return y
 
+# Training set
 trainset = torchvision.datasets.CIFAR10(root = './data',
                                         train = True,
-                                        download = True,
+                                        download = False,
                                         transform = torchvision.transforms.ToTensor()
                                         )
 
 trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch_size, shuffle = True)
 
+# Testing set
 testset = torchvision.datasets.CIFAR10(root = './data',
                                        train = False,
-                                       download = True,
+                                       download = False,
                                        transform = torchvision.transforms.ToTensor()
                                        )
 
@@ -57,6 +57,7 @@ net = net.to(device)
 loss_func = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(net.parameters())
 
+# Evaluating Model Performance
 def model_evalutaion(dataloader):
     total = 0
     correct = 0
@@ -74,7 +75,7 @@ def model_evalutaion(dataloader):
     return accuracy
 
 start = time.perf_counter()
-total_epochs = 20
+total_epochs = 2
 for i in range(total_epochs):
     for data in trainloader:
         image_data, labels = data
