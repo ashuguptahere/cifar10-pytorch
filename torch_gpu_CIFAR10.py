@@ -1,24 +1,17 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 24 10:21:38 2019
-
-@author: fluXcapacit0r
-"""
-
+# Importing Essential Libraries
 import time
 import torch
-import torch.nn as nn
-#import numpy as np
-#import matplotlib.pyplot as plt
-
 import torchvision
+import torch.nn as nn
 
+# Working on CUDA available Machine
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-# Assuming that we are on a CUDA machine, this should print a CUDA device:
+
 print(device)
 
-batch = 256
+batch_size = 256
 
+# Defining Class
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
@@ -49,7 +42,7 @@ trainset = torchvision.datasets.CIFAR10(root = './data',
                                         transform = torchvision.transforms.ToTensor()
                                         )
 
-trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch, shuffle = True)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch_size, shuffle = True)
 
 testset = torchvision.datasets.CIFAR10(root = './data',
                                        train = False,
@@ -57,7 +50,7 @@ testset = torchvision.datasets.CIFAR10(root = './data',
                                        transform = torchvision.transforms.ToTensor()
                                        )
 
-testloader = torch.utils.data.DataLoader(testset, batch_size = batch, shuffle = False)
+testloader = torch.utils.data.DataLoader(testset, batch_size = batch_size, shuffle = False)
 
 net = LeNet()
 net = net.to(device)
@@ -97,4 +90,3 @@ for i in range(total_epochs):
     print("Epoch: ", i+1,"Train Accuracy: ", train_acc, "Test Accuracy: ", test_acc)
 end = time.perf_counter()
 print("Time taken to execute the program is: ", end-start)
-# Execution time is around 16 seconds for 1 epoch and without chargers it's 21.73 seconds
