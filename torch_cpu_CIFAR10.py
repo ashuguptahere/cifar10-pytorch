@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 24 10:38:14 2019
-
-@author: fluXcapacit0r
-"""
-
 import time
 import torch
 import torch.nn as nn
