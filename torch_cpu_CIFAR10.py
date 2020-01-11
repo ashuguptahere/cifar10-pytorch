@@ -1,17 +1,12 @@
+# Importing Essential Libraries
 import time
 import torch
-import torch.nn as nn
-#import numpy as np
-#import matplotlib.pyplot as plt
-
 import torchvision
+import torch.nn as nn
 
-#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-# Assuming that we are on a CUDA machine, this should print a CUDA device:
-#print(device)
+batch_size = 256
 
-batch = 256
-
+# Creating Class
 class LeNet(nn.Module):
     def __init__(self):
         super(LeNet, self).__init__()
@@ -28,6 +23,7 @@ class LeNet(nn.Module):
                                          nn.Tanh(),
                                          nn.Linear(84, 10)
                                          )
+    # Feed Forward Method
     def forward(self, x):
         #x = x.to(device)
         y = self.conv_model(x)
@@ -39,18 +35,16 @@ class LeNet(nn.Module):
 trainset = torchvision.datasets.CIFAR10(root = './data',
                                         train = True,
                                         download = True,
-                                        transform = torchvision.transforms.ToTensor()
-                                        )
+                                        transform = torchvision.transforms.ToTensor())
 
 trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch, shuffle = True)
 
 testset = torchvision.datasets.CIFAR10(root = './data',
                                        train = False,
                                        download = True,
-                                       transform = torchvision.transforms.ToTensor()
-                                       )
+                                       transform = torchvision.transforms.ToTensor())
 
-testloader = torch.utils.data.DataLoader(testset, batch_size = batch, shuffle = False)
+testloader = torch.utils.data.DataLoader(testset, batch_size = batch_size, shuffle = False)
 
 net = LeNet()
 loss_func = nn.CrossEntropyLoss()
@@ -84,4 +78,3 @@ for i in range(total_epochs):
     print("Epoch:", i, ", Test Accuracy:", test_acc, ", Train Accuracy:", train_acc)
 end = time.perf_counter()
 print("Time taken to execute the program is: ", end-start)
-# Execution time is around 52 seconds for 1 epoch  and without chargers it's 62.95 seconds
