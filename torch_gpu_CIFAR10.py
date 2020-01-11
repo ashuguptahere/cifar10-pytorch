@@ -37,18 +37,16 @@ class LeNet(nn.Module):
 # Training set
 trainset = torchvision.datasets.CIFAR10(root = './data',
                                         train = True,
-                                        download = False,
-                                        transform = torchvision.transforms.ToTensor()
-                                        )
+                                        download = True,
+                                        transform = torchvision.transforms.ToTensor())
 
 trainloader = torch.utils.data.DataLoader(trainset, batch_size = batch_size, shuffle = True)
 
 # Testing set
 testset = torchvision.datasets.CIFAR10(root = './data',
                                        train = False,
-                                       download = False,
-                                       transform = torchvision.transforms.ToTensor()
-                                       )
+                                       download = True,
+                                       transform = torchvision.transforms.ToTensor())
 
 testloader = torch.utils.data.DataLoader(testset, batch_size = batch_size, shuffle = False)
 
